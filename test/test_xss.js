@@ -88,6 +88,7 @@ describe("test XSS", function() {
     assert.equal(xss("<img src//>"), "<img src />");
     assert.equal(xss("<br/>"), "<br />");
     assert.equal(xss("<br />"), "<br />");
+    assert.equal(xss("<img src=x onerror=alert('XSS')"), "<img src>");
 
     // 畸形属性格式
     assert.equal(
@@ -132,6 +133,12 @@ describe("test XSS", function() {
       ),
       '<img width="100" height="200" title="xxx" alt="\'yyy\'">'
     );
+    assert.equal(
+      xss(
+        '<img loading="lazy">'
+      ),
+      '<img loading="lazy">'
+    );
 
     // 使用Tab或换行符分隔的属性
     assert.equal(
@@ -166,6 +173,20 @@ describe("test XSS", function() {
       '<ooxx yy="ok">uu</ooxx>'
     );
   });
+
+  it("#allowList", function() {
+    // 过滤所有标签
+    assert.equal(
+      xss('<a title="xx">bb</a>', { allowList: {} }),
+      '&lt;a title="xx"&gt;bb&lt;/a&gt;'
+    );
+    assert.equal(xss("<hr>", { allowList: {} }), "&lt;hr&gt;");
+    // 增加白名单标签及属性
+    assert.equal(
+      xss('<ooxx yy="ok" cc="no">uu</ooxx>', { allowList: { ooxx: ["yy"] } }),
+      '<ooxx yy="ok">uu</ooxx>'
+    );
+  })
 
   // XSS攻击测试：https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
   it("#XSS_Filter_Evasion_Cheat_Sheet", function() {
@@ -403,7 +424,7 @@ describe("test XSS", function() {
     assert.equal(xss("<!--sa       -->ss", { allowCommentTag: false }), "ss");
     assert.equal(
       xss("<!--                               ", { allowCommentTag: false }),
-      "&lt;!--                               "
+      ""
     );
   });
 
@@ -417,5 +438,17 @@ describe("test XSS", function() {
     var ret2 = new _xss.FilterXSS(options);
     // console.log(options);
     assert.deepEqual(options, {});
+  });
+
+  it("camel case tag names", function() {
+    assert.equal(xss('<animateTransform attributeName="transform"' +
+      'attributeType="XML"' +
+      'type="rotate"' +
+      'repeatCount="indefinite"/>', {
+      whiteList: {
+        animateTransform: ["attributeType", "repeatCount"]
+      }
+    }),
+      '<animatetransform attributetype="XML" repeatcount="indefinite" />');
   });
 });

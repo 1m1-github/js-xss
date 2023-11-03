@@ -1,5 +1,29 @@
 # CHANGELOG
 
+## v1.0.14 (2022-08-16)
+
+- [fix: problem with not closed tag](https://github.com/leizongmin/js-xss/pull/262) by @slawiko
+- [fix: add allowList to types](https://github.com/leizongmin/js-xss/pull/261) by @metonym
+
+## v1.0.13 (2022-06-07)
+
+- [revert: fix: comment has encoded](https://github.com/leizongmin/js-xss/pull/257)
+
+## v1.0.12 (2022-06-04)
+
+- [feat: add eslint:recommended check](https://github.com/leizongmin/js-xss/pull/252) by @lumburr
+- [fix: comment has encoded](https://github.com/leizongmin/js-xss/pull/257) by @lumburr
+- [fix: whitelist match failure due to case ignoring](https://github.com/leizongmin/js-xss/pull/256) by @lumburr
+- [fix: class is wrong separated by attributes in method onTagAttr](https://github.com/leizongmin/js-xss/pull/253) by @lumburr
+
+## v1.0.11 (2022-03-06)
+
+- [feat: add support for allowList as an alias for whiteList](https://github.com/leizongmin/js-xss/pull/249) by @schu34
+
+## v1.0.10 (2021-10-08)
+
+- [Fix: #239 stripCommentTag DoS attack](https://github.com/leizongmin/js-xss/pull/239)
+
 ## v1.0.9 (2021-05-06)
 
 - [Fix whitespace bypass #218](https://github.com/leizongmin/js-xss/pull/218/files) by @TomAnthony
